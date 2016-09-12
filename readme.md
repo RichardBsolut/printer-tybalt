@@ -4,6 +4,9 @@ my version of the [Printer Kitten](https://github.com/woolfepr/Printer-Kitten)
 
 ![Expected vs Real](/expected.png)
 
+### Why not simple use Kitten ?
+
+Kitten only publishs the stl file, now we have openscad parts.
 
 ## Bom
 
@@ -62,3 +65,8 @@ The list is more an  overview not a final list
 | Printhead | 1h 30m | 6.96m   | 21g |
 ||
 | ***Total*** | *9h 44m* | *46.10m* | 137g |
+
+
+
+*Finaly*
+http://pr0gramm.com/top/1498986
