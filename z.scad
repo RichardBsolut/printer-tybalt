@@ -167,7 +167,9 @@ module zRodHold3() {
     }
 }
 
-module zMotorMount(extraH=0) {
+module zMotorMount(
+    extraH=0 //If your screw is to long, add some extra mm here
+) {
     difference() {
         union() {
             cube([3,motorSize,motorH+extraH]);
