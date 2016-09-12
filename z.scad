@@ -56,6 +56,7 @@ module zSensor(h=8) {
     }
 }
 
+
 module zAssembly(withProfile=true) {
     if(withProfile) {
         move(x=-250/2,y=-20)
@@ -166,18 +167,17 @@ module zRodHold3() {
     }
 }
 
-
-module zMotorMount() {
+module zMotorMount(extraH=0) {
     difference() {
         union() {
-            cube([3,motorSize,motorH]);
+            cube([3,motorSize,motorH+extraH]);
             move(x=motorSize+3)
-                cube([3,motorSize,motorH]);
+                cube([3,motorSize,motorH+extraH]);
             move(x=3,z=motorH-3) 
-                motorSuspension(h=3, yspace=3);
+                motorSuspension(h=3+extraH, yspace=3);
             
             move(z=20,y=-3)
-            cube([motorSize+6,3, motorH-20]);
+                cube([motorSize+6,3, motorH-20+extraH]);
             
             move(x=motorSize/2 - 12/2+3) {
                 hull() {
@@ -186,7 +186,7 @@ module zMotorMount() {
                     /*move(z=20,y=-20)
                         cube([12,20,3]);*/
                     move(z=20,y=-10,x=6)
-                    cylinder(d=15,h=3);
+                        cylinder(d=15,h=3);
                 }
             }
             
@@ -238,7 +238,3 @@ module zMotorMount() {
         }
     }
 }
-
-
-
-//=======================OLD
