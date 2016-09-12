@@ -5,6 +5,20 @@ PY = 290;
 PZ = 250;
 
 PROFILE_SIZE = 20;
+PROFILE_CUT = 4.3;
+PROFILE_CUTD = 6.35;
+/*
+  PROFILE 
+    |<--PROFILE_SIZE->|
+        PROFILE_CUT
+           |<->|
+     _____       _____   –
+    /     )     (     \  | PROFILE_CUTD
+    |    /_______\    |  _
+
+*/
+
+
 PROFILE_PLAY = 0.2;
 PROFILE_SCREW = 3;
 R_PLAY = 0.3;
