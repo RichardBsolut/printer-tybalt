@@ -2,20 +2,15 @@ use <./lib/bcad.scad>
 include <./cfg.scad>
 use <./vitamins.scad>
 
-PLAY = 0.25;
+PLAY = 0.1;
 hookLen = PROFILE_CUT + (PROFILE_SIZE-PROFILE_CUT)/2;
 WALL=2;
-
 $fn=50;
-difference() {    
-    fullClip(h=5);
-    /*move(z=-1)
-        scale([1,2,1])
-            cylinder(d=WALL/2,h=10);*/
-}
+
+fullClip(h=8,intersect=1,deep=3);
     
-module fullClip(h=8,width=15,r=2,gap=2,gapDeg=20) {
-    holder(h=h,r=r);
+module fullClip(h=8,width=15,r=2,gap=2,gapDeg=20,deep=2.1,intersect=0.8) {
+    holder(h=h,r=r,intersect=intersect,deep=deep);
     clip(width=width,h=h,gap=gap,gapDeg=gapDeg);
 }
 
