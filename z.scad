@@ -4,11 +4,98 @@ use <./lib/motor/17HD.scad>
 include <./cfg.scad>
 use <./vitamins.scad>
 
+use <../libs/parts/OPB743.scad>
+
 //$fn=50;
 //zRodHold3();
 //zMotorMount();
 //zMagnetMount();
-zAssembly();
+//zAssembly();
+
+zEndStop2();
+
+module test() {
+    move(y=-38,x=30,z=20)
+    yrot(90) xrot(90)
+        OPB743();
+    
+    xrot(90)
+    import("./kitten_parts/print_head.stl");
+}
+
+
+module zEndStop2(h=8, bottomCable=true) {
+
+    
+    SHELL=2;
+    SHELL2 = SHELL*2;
+    PLAY = 0.25;
+    BOX_SIZE = 8.5 + PLAY*2;
+  
+    move(x=(10+R_PLAY)/2+R_PLAY, y=-BOX_SIZE/2+(bottomCable ? 2 : 0))
+        cube([BOX_SIZE,BOX_SIZE-2,1]);
+    difference() {
+        union() {
+            //Basic clamp
+            cylinder(d=10+SHELL*2+R_PLAY,h=h);
+            move(x=-12, y=-(10+SHELL)/2)
+                cube([12,10+SHELL*1.5,h]);
+            move(x=10/2-SHELL2/2,y=-(BOX_SIZE+SHELL2) /2)
+                rrect([BOX_SIZE+SHELL2,BOX_SIZE+SHELL2,h],r=1);
+        }
+        //Leg Cap        
+        move(z=-1) {
+            cylinder(d=10+R_PLAY,h=h+2);
+            move(x=-10,z=h/2+1)
+                cube([20,7,h+2],center=true);            
+        }
+        //Leg screw
+        move(x=-10/2-3, y=-10,z=h/2)
+        xrot(-90) {
+            mainScrew(screwlen=20);
+            move(z=10+SHELL*2.5)
+                m3Nut(hole=false,play=0.2);
+        }
+        //Endstop
+        move(x=0,y=-(BOX_SIZE)/2,z=-1)
+            cube([BOX_SIZE+10/2,BOX_SIZE,h+2]);
+    }    
+}
+
+module zEndStop(h=8, bottomCable=true) {    
+    SHELL=2;
+    SHELL2 = SHELL*2;
+    PLAY = 0.25;
+    BOX_SIZE = 8.5 + PLAY*2;
+   
+    //move(y=-8.5/2,x=10/2,z=1) endstopSwitch();  
+   
+    move(x=(10+R_PLAY)/2+R_PLAY, y=-BOX_SIZE/2+(bottomCable ? 2 : 0))
+        cube([BOX_SIZE,BOX_SIZE-2,1]);
+    difference() {
+        union() {
+            //Basic clamp
+            cylinder(d=10+SHELL*2+R_PLAY,h=h);
+            move(x=-12, y=-(10+SHELL)/2)
+                cube([12,10+SHELL,h]);
+            move(x=10/2-SHELL2/2,y=-(BOX_SIZE+SHELL2) /2)
+                rrect([BOX_SIZE+SHELL2,BOX_SIZE+SHELL2,h],r=1);
+        }
+        //Leg Cap        
+        move(z=-1) {
+            cylinder(d=10+R_PLAY,h=h+2);
+            move(x=-10,z=h/2+1)
+                cube([20,7,h+2],center=true);            
+        }
+        //Leg screw
+        move(x=-10/2-3, y=-10,z=h/2)
+        xrot(-90)
+            mainScrew(screwlen=20);
+        //Endstop
+        move(x=0,y=-(BOX_SIZE)/2,z=-1)
+            cube([BOX_SIZE+10/2,BOX_SIZE,h+2]);
+    }
+}
 
 module zSensor(h=8) {
     SHELL=2;
@@ -140,8 +227,6 @@ module zMagnetMount() {
         }
     }
 }
-
-
 
 module zRodHold3() {
     h = motorH-20;

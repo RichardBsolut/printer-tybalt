@@ -4,6 +4,16 @@ use <./lib/motor/17HD.scad>
 include <./cfg.scad>
 
 
+module endstopSwitch(center=false) {
+    translate(center ? [-8.5/2,-8.5/2,0] : [0,0,0]) {
+        color("silver")
+            cube([8.5,8.5,8.5]);
+        color("grey")
+        move(x=8.5/2-4/2, y=8.5/2-4/2, z=8.5)
+            cube([4,4,5.5]);
+    }
+}
+
 module coupler() {
     color("silver")
         cylinder(d=19,h=25);
