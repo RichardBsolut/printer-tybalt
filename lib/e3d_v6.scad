@@ -27,13 +27,13 @@ module print_part() {
 }
 
 // ######################################################################################################################
-module e3d() {
+module e3d(r=11.15) {
 	difference() {
 		union() {
 			translate([0,0,0]) fncylinder(r=8,h=7);
 			translate([0,0,6]) fncylinder(r=6,h=8);
 			translate([0,0,13]) fncylinder(r=8,h=8);
-			translate([0,0,20]) fncylinder(r=11.15,h=26);
+			translate([0,0,20]) fncylinder(r=r,h=26);
 			translate([0,0,0]) fncylinder(r=8,h=7);
 			translate([0,0,45]) fncylinder(r=2,h=4.1);
 			translate([-8,-4.5,48.1]) chamfercube([16,20,11.5],side=[0.4,0.4,0.4,0.4],top=[0.4,0.4,0.4,0.4],bottom=[0.4,0.4,0.4,0.4]);
