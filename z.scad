@@ -6,7 +6,7 @@ use <./vitamins.scad>
 
 use <../libs/parts/OPB743.scad>
 
-//$fn=50;
+$fn=50;
 //zRodHold3();
 //zMotorMount();
 //zMagnetMount();
