@@ -99,6 +99,7 @@ module LMKXUU(size=10) {
 // Round Bearings.
 //////////////////////////////////////////////////////////////////////
 function get_bearing_inner_diam(size) = lookup(size, [
+        [ 115.0,   5.0],//MR115
         [ 188.0,   6.3],
         [ 608.0,   8.0],
         [ 623.0,   3.0],
@@ -110,8 +111,8 @@ function get_bearing_inner_diam(size) = lookup(size, [
 ]);
 
 function get_bearing_outer_diam(size) = lookup(size, [
+        [ 115.0,  11.0],//MR115
         [ 188.0,  13.5],
-
         [ 608.0,  22.0],
         [ 623.0,  10.0],
         [ 624.0,  13.0],
@@ -122,8 +123,8 @@ function get_bearing_outer_diam(size) = lookup(size, [
     ]);
 
 function get_bearing_height(size) = lookup(size, [
+        [ 115.0,   4.0],//MR115
         [ 188.0,   5.0],
-
         [ 608.0,   7.0],
         [ 623.0,   4.0],
         [ 624.0,   5.0],
@@ -165,7 +166,7 @@ module bearing(size = 626, outline) {
     }
 }
 
-bearing(outline=true);
+bearing(size=115,outline=true);
 
 
 
