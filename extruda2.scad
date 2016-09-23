@@ -1,7 +1,179 @@
 include <./cfg.scad>
 use <./lib/bcad.scad>
 use <./lib/motor/17HD.scad>
+use <./lib/bearing.scad>
 use <./vitamins.scad>
+
+$fn=50;
+use <./help/extr/planetary-gearbox-extruder-master/planetary_50mm.scad>
+
+gap=0.5;   
+WALL = 2;
+
+//Hobbed Pulley
+HPulleyD = 12;
+HPulleyH = 14;
+HPulleyHD = 3;  //Hobbed deepth
+HPulleyHT = 12; //Hobbed center from bottom
+
+
+IDLER_BEAR = 608;
+HPulleyBear = 115;
+
+//Calced
+//HP_R = HP_D / 2;
+FilamentX = (HPulleyD-HPulleyHD/2)/2 + 0.2;
+FilamentZ = HPulleyHT;
+
+IdlerH = get_bearing_height(IDLER_BEAR)+6;
+IdlerSpacing = FilamentZ-IdlerH/2;
+
+
+module bearing2() {
+    color("silver")
+    cylinder(d=11,h=5);
+}
+
+module hobbedPulley() {
+    difference() {
+        cylinder(d=HPulleyD,h=HPulleyH);
+        move(z=HPulleyHT)
+            rotate_extrude(convexity=10)
+            move(x=HPulleyD/2)
+                circle(d=HPulleyHD);
+    }
+}
+
+echo("motorScrewSpacing/2",motorScrewSpacing/2);
+echo("-FilamentX-WALL",-FilamentX-WALL);
+
+//move(z=HPulleyH) bearing2();
+
+
+move(z=0) {
+    hobbedPulley();
+    color("silver")
+        cylinder(d=5,h=20);
+
+    !newBase();
+    /*move(x=motorScrewSpacing/2,y=-motorScrewSpacing/2,z=IdlerSpacing)
+        idler(h=IdlerH);
+    move(x=FilamentX+get_bearing_outer_diam(IDLER_BEAR)/2-1.5,z=IdlerSpacing-1.5)
+        plug();*/
+}
+
+//yrot(180)cover(1);
+
+
+module newBase() {    
+    
+    hBearH = get_bearing_height(HPulleyBear);    
+    hBearD = get_bearing_outer_diam(HPulleyBear);    
+    
+    bearD = get_bearing_outer_diam(IDLER_BEAR);
+    bearH = get_bearing_height(IDLER_BEAR);    
+    fullH = HPulleyH+WALL;
+    echo("FullH",fullH);
+    
+    difference() {
+        union() {            
+            move(x=-FilamentX-8/2-WALL,y=-(HPulleyD+WALL*2)/2)
+                cube([FilamentX+8/2+WALL,HPulleyD+WALL*2,HPulleyH+hBearH]);
+            cylinder(d=HPulleyD+WALL*2,h=HPulleyH+hBearH);
+            
+            cylinder(d=HPulleyD+WALL*2,h=fullH);//Wall around hpulley
+            hull() {            
+                cylinder(d=HPulleyD+WALL*2,h=fullH);//Wall around hpulley
+                rrect([14,motorSize/2,fullH]);
+                
+                move(x=-FilamentX-WALL,y=motorSize/2-(6+WALL)/2)
+                    cylinder(d=6+WALL,h=fullH);
+                move(x=-FilamentX-WALL,y=-motorScrewSpacing/2)
+                    cylinder(d=6+WALL,h=fullH);
+                move(x=motorScrewSpacing/2,y=-motorScrewSpacing/2)
+                    cylinder(d=6+WALL,h=fullH);
+            }
+        }
+        
+        //Screws
+        move(z=2+20-5) {//2 HeadClear + 20 ScrewLen - 5 Interscetion in body
+            move(x=-FilamentX-WALL,y=motorSize/2-(6+WALL)/2)
+            zflip()
+                mainScrew(screwlen=20,head=5);
+            move(x=-FilamentX-WALL,y=-motorScrewSpacing/2)
+            zflip()
+                mainScrew(screwlen=20,head=5);
+            move(x=motorScrewSpacing/2,y=-motorScrewSpacing/2)
+            zflip()
+                mainScrew(screwlen=20,head=5);
+        }
+        
+        // Aussparrung idler
+        up(IdlerSpacing) {
+            move(x=10,y=-motorSize/2-10)
+                cube([30,40,t]);
+        }
+        
+        move(z=-1) {                      
+            cylinder(d=HPulleyD+2,h=HPulleyH+2);//Cut HobbedPulley                        
+            cylinder(d=hBearD+0.3,h=hBearH+HPulleyH+WALL+2);
+            move(y=-5/2)
+                cube([motorSize,5,fullH+WALL+2]);
+        }
+        
+        cylinder(d=5.2,h=100,center=true);//Cut M5Bolt
+        
+        
+        // Aussparrung (öffnung) in der Front des       Extruderblocks (Breite "Flanschring")
+        move(x=FilamentX+(bearD+gap*2)/2, z=-1) {
+            hull() {
+                cylinder(d=bearD+gap*2,h=fullH+WALL+2);
+                move(x=bearD/2)
+                    cylinder(d=bearD+gap*2,h=fullH+WALL+2);
+            }
+        }
+
+    
+        //Idler Bearing
+        move(x=HPulleyHT/2+bearD/2, z=FilamentZ-bearH/2)
+            bearing(size=IDLER_BEAR);
+        
+        // Aussparrung PTFE Tube
+        move(x=FilamentX,z=FilamentZ)
+        xrot(90)
+            cylinder(d=4,h=100,center=true);
+
+        //Aussparrung PTFE Tube Holder PC4-01 
+        move(x=FilamentX,z=FilamentZ,y=motorSize/2-4.5)
+        xrot(-90)
+            cylinder(d=5.7+R_PLAY,h=4.5+1);
+            
+        move(x=14-4.5, z=FilamentZ,y=motorScrewSpacing/2)
+        yrot(90)
+            spannfederCut();
+
+    }
+/*
+    ===== OLD =====    
+    //Aussparrungen
+    /*move(z=-1) {
+        cylinder(d=HP_D+gap, h=t+2); //Pulley
+        //Kegel oben
+        move(z=HP_HT)
+            cylinder(d1=HP_D+gap*4,d2=frd+gap*2,h=20);
+        //Kegel unten
+            cylinder(d1=HPulleyD+2,d2=HP_D+gap*4,h=HP_HT);
+    }*/
+}
+
+
+
+
+
+//base();
+//move(x=motorScrewSpacing/2,y=-motorScrewSpacing/2,z=FILA_Z-12/2-3)
+//    idler(h=15);
+
 
 //cfg
 gad=54;    // Diameter Gehäuserundung
@@ -31,10 +203,12 @@ FILA_Z = HP_HT;
 
 //$fn=50;
 //holder2();
-//base();
-//idler();
+
 //plug();
 //fullExtruda();
+
+
+
 
 
 
@@ -43,15 +217,6 @@ module plug() {
     cylinder(d=8-R_PLAY,h=14.25);
 }
 
-module hobbedPulley() {
-    difference() {
-        cylinder(d=HP_D,h=HP_H);
-        move(z=HP_HT)
-            rotate_extrude(convexity=10)
-            move(x=HP_D/2)
-                circle(d=HP_HD);
-    }
-}
 
 
 module fullExtruda() {
@@ -198,6 +363,9 @@ module base() {
     }
 }
 
+
+
+
 module baseBase() {
     difference() {
         intersection() {
@@ -244,14 +412,28 @@ module baseBase() {
         }
 
         // Aussparrung PTFE Tube
-        move(x=FILA_X,z=FILA_Z+1)
+        #move(x=FILA_X,z=FILA_Z+1)
         xrot(90)
             cylinder(d=4,h=100,center=true);
 
         // Aussparrung PTFE Tube holder
-        move(x=FILA_X,z=FILA_Z+1,y=10+motorSize/2-6)
+        #move(x=FILA_X,z=FILA_Z+1,y=10+motorSize/2-6)
         xrot(90)
             cylinder(d=5.7+R_PLAY,h=10);
+        #move(z=4+12/2,y=motorSize/2-5,x=motorSize/2-13.5+1.5)
+        yrot(90)
+            spannfederCut();
+
+        
+                //Aussparrungen
+        move(z=-1) {
+            cylinder(d=HP_D+gap, h=t+2); //Pulley
+            //Kegel oben
+            move(z=HP_HT)
+                cylinder(d1=HP_D+gap*4,d2=frd+gap*2,h=20);
+            //Kegel unten
+            cylinder(d1=frd+gap*2,d2=HP_D+gap*4,h=HP_HT);
+        }
 
         // Aussparrung idler
         up(4) {
@@ -262,15 +444,12 @@ module baseBase() {
         }
 
 
-        move(z=4+12/2,y=motorSize/2-5,x=motorSize/2-13.5+1.5)
-        yrot(90)
-            spannfederCut();
     }
 }
 
 
 
-idh=15;      // Höhe des Idlers
+idh=12;      // Höhe des Idlers
 diai=8;      // Diameter der Aussenrundung am Drehpunkt
 
 module idler(h=idh,diai=diai) {
@@ -296,9 +475,9 @@ module idler(h=idh,diai=diai) {
 
         // Bohrung für die Achse des Hebels
         move(z=-1) {
-            cylinder(d=3+kf3,h=h+2);
-            move(z=h-1)
-                cylinder(d=6.8,h=h+2);
+            move(z=-IdlerSpacing+2+1+(+20-5))
+            zflip()
+                mainScrew(screwlen=20,head=5);
         }
 
         // Aussparrung für Kugellagers
@@ -346,7 +525,7 @@ module idler(h=idh,diai=diai) {
 
 
 
-module bearing() {
+module bearing_old() {
     color("silver")
         cylinder(d=BEARING_D,h=BEARING_H);
 }
