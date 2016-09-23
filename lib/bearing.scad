@@ -145,24 +145,26 @@ module _bearRing(od, id, h, material, holeMaterial) {
     }
 }
 
-module bearing(size = 626, outline) {
+module bearing(size = 626, outline, center=false) {
     innerD = get_bearing_inner_diam(size);
     outerD = get_bearing_outer_diam(size);
     h = get_bearing_height(size);
 
-    if(outline) {
-        innerRim = innerD + (outerD - innerD) * 0.2;
-        outerRim = outerD - (outerD - innerD) * 0.2;
-        midSink = h * 0.1;
-        translate([0,0,midSink])
-            _bearRing(outerRim,innerRim,h-midSink*2);
-        color([0.65, 0.67, 0.72])
-            _bearRing(innerRim, innerD, h);
-        color([0.65, 0.67, 0.72])
-            _bearRing(outerD, outerRim, h);
-    } else {
-        color([0.65, 0.67, 0.72])
-            _bearRing(outerD, innerD, h);
+    translate(center ? [0,0,-h/2] : [0,0,0]) {
+        if(outline) {
+            innerRim = innerD + (outerD - innerD) * 0.2;
+            outerRim = outerD - (outerD - innerD) * 0.2;
+            midSink = h * 0.1;
+            translate([0,0,midSink])
+                _bearRing(outerRim,innerRim,h-midSink*2);
+            color([0.65, 0.67, 0.72])
+                _bearRing(innerRim, innerD, h);
+            color([0.65, 0.67, 0.72])
+                _bearRing(outerD, outerRim, h);
+        } else {
+            color([0.65, 0.67, 0.72])
+                _bearRing(outerD, innerD, h);
+        }
     }
 }
 
