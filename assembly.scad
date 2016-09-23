@@ -14,14 +14,18 @@ move(y=PY,z=PZ-PROFILE)
 move(z=-PROFILE)
     printHeadAssembly();
 
-move(x=PROFILE,y=PY/2)
+move(x=PROFILE,y=PY/2,z=0)
 zrot(-90)
     zAssembly();
 
-move(y=PY-PROFILE,z=PZ-PROFILE-motorSize*2-(XY_BEARING_MIN_WALL+XY_BEAR_D)*2-2)
-    zrot(-90) xrot(90)
-    extruder();
 
+use <./help/extr/planetary-gearbox-extruder-master/planetary_50mm.scad>
+move(y=PY-motorSize+1,z=120)
+yrot(-90) zrot(-90)
+    myAssembly();
+
+    
+    
 module imp(name) {
     import( str("./output/",name) );
 }
@@ -192,7 +196,7 @@ module topRods(length=PX-PROFILE*2, width=PY,carriageFilp=false) {
 }
 
 
-module zAssembly(){    
+module zAssembly(plate=10){    
     move(x=-(motorSize+6)/2,y=0, z=-PROFILE+WALL)
         imp("zmotorhold.stl");
     
@@ -212,7 +216,7 @@ module zAssembly(){
             zflip() imp("zhold.stl");    
     }
 
-    move(z=6+50) {
+    move(z=6+50+plate) {
         color("silver")
         move(z=-6,y=21.25)
             yflip()linear_extrude(height=6)
