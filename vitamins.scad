@@ -3,9 +3,11 @@ use <./lib/screw.scad>
 use <./lib/motor/17HD.scad>
 include <./cfg.scad>
 
-//SANBUM LBL-11337-1-01
-//144x33x8,5 mm.
-//Resolution 132x22
+module screenLBL11337() {
+    //Resolution 132x22
+    color("silver")
+        cube([144,33,8.5]);
+}
 
 
 module endstopSwitch(center=false) {
