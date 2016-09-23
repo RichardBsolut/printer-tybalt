@@ -101,11 +101,11 @@ module LS_6116_6() {
 
 module mainScrew(screwlen=9,forTap=false,head=2,headw=0) {
     up(2-head)
-    cylinder(d=5.9+headw,h=head);
+        cylinder(d=6.1+headw,h=head);
     if(forTap) {
         cylinder(d=get_metric_corehole_size(3),h=screwlen+2);
     } else
-        cylinder(d=3,h=screwlen+2);
+        cylinder(d=3.2,h=screwlen+2);
 }
 
 module profile(h=200) {
