@@ -7,6 +7,7 @@ my version of the [Printer Kitten](https://github.com/woolfepr/Printer-Kitten)
 ### Why not simple use Kitten ?
 
 Kitten only publishs the stl file, now we have openscad parts.
+Mit 34mm schnupfmuffe und vorzerstaeuber druckluft trichter waere sehr schoen.
 
 ## Bom
 
