@@ -68,5 +68,5 @@ The list is more an  overview not a final list
 
 
 
-*Finaly*
+*Finally*
 http://pr0gramm.com/top/1498986
