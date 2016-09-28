@@ -1,6 +1,72 @@
 use <./lib/bcad.scad>
 use <./lib/screw.scad>
 
+$fn=50;
+simpleZProbe();
+
+module microSwitch() {
+    color("silver")
+    move(z=2/2)
+        cube([6,6,2],center=true);
+    color("black")
+    move(z=1)
+        cylinder(d=3.5,h=5-1);
+    //Connect leads
+    yflip_copy()
+    xflip_copy()
+    move(x=6/2,y=6/2-2,z=-2)
+        cube([0.2,1,4]);
+}
+
+//copy from https://www.thingiverse.com/thing:1729523
+module simpleZProbe(
+    wall = 2.5,
+    hexSize = 8,
+    clearance = 0.35
+) {
+    %move(z=7.5) microSwitch();
+
+    difference() {
+        intersection() {
+            fillet(r=2) {
+                hull() {
+                    zring(n=6)
+                    move(y=hexSize/2+wall)
+                        cylinder(d=1,h=3);
+                }
+                hull() {
+                    move(z=1/2+2)
+                        cube([6,hexSize+wall,1],center=true);
+                    move(z=10.5/2)
+                        rrect([6,hexSize+wall/2,10.5],center=true,r=0.5);
+                }
+            }
+            
+            hull() {
+                zring(n=6)
+                move(y=hexSize/2+wall)
+                    cylinder(d=1,h=12);
+            }
+        }
+     
+        //Microswitch cut
+        move(z=10/2+7.2) {
+            cube([10,6+clearance,10],center=true);        
+            yflip_copy()
+            move(y=(6+clearance)/2,z=-10/2+1/2)
+            yrot(90)
+                cylinder(d=1,h=10,center=true);
+        }        
+        
+        //Nut cut
+        move(z=-1)
+            zrot(30) cylinder(d=hexSize+.5,h=3+1,$fn=6);
+        move(z=1.5)
+            sphere(d=hexSize);
+    }   
+}
+
+
 
 //Based on src=http://www.thingiverse.com/thing:225188
 //thumbWheel(size=3);
