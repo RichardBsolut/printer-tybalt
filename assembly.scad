@@ -4,19 +4,40 @@ use <lib/motor/17HD.scad>
 include <./cfg.scad>
 use <./vitamins.scad>
 
-move(x=PX/2,y=PY/2)
-    frameAssembly();    
-move(y=PY,z=PZ)
-    xAssembly();    
-move(y=PY,z=PZ-PROFILE)
-    topAssembly();
-move(z=-PROFILE)
-    printHeadAssembly();
+use <../libs/devboard/arduino.scad>;
 
-move(x=PROFILE,y=PY/2,z=0)
-zrot(-90)
-    zAssembly();
+move(y=-PY/2) 
+{
+    move(x=PX/2,y=PY/2)
+        frameAssembly();    
+    move(y=PY,z=PZ)
+        xAssembly();    
+    move(y=PY,z=PZ-PROFILE)
+        topAssembly();
+    move(z=-PROFILE)
+        printHeadAssembly();
 
+    move(x=PROFILE,y=PY/2,z=0)
+    zrot(-90)
+        zAssembly();
+    
+    //Deco
+    move(y=PROFILE,x=PROFILE+35,z=-PROFILE)
+        color("grey")powerSupply();
+ 
+    move(y=PY-PROFILE-55,x=50,z=-PROFILE)
+    move(x=102) zrot(90)
+    translate([53.5/2,101.6/2, 0])     
+        arduino_mega();
+}
+
+
+
+
+move(x=PX-10)
+yrot(-30) zrot(90)xrot(90)
+move(x=-144/2)
+    screenLBL11337();
 
     
 module imp(name) {
