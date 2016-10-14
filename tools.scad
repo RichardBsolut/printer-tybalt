@@ -1,7 +1,7 @@
 use <./lib/bcad.scad>
 use <./lib/screw.scad>
 
-$fn=50;
+//$fn=50;
 simpleZProbe();
 
 module microSwitch() {
@@ -20,7 +20,7 @@ module microSwitch() {
 
 //copy from https://www.thingiverse.com/thing:1729523
 module simpleZProbe(
-    wall = 2.5,
+    wall = 1.5,
     hexSize = 8,
     clearance = 0.35
 ) {
@@ -28,7 +28,8 @@ module simpleZProbe(
 
     difference() {
         intersection() {
-            fillet(r=2) {
+            fillet(r=2)
+            {
                 hull() {
                     zring(n=6)
                     move(y=hexSize/2+wall)
@@ -51,7 +52,7 @@ module simpleZProbe(
      
         //Microswitch cut
         move(z=10/2+7.2) {
-            cube([10,6+clearance,10],center=true);        
+            cube([10,6,10],center=true);        
             yflip_copy()
             move(y=(6+clearance)/2,z=-10/2+1/2)
             yrot(90)

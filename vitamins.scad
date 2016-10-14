@@ -9,6 +9,17 @@ module screenLBL11337() {
         cube([144,33,8.5]);
 }
 
+module arrow(size=10, headpart=0.4) {
+    color("orange")
+    yrot(90) {
+        down(size/2)
+        union() {
+            up(size*headpart/2) cylinder(d1=0, d2=size/2, h=size*headpart, center=true, $fn=18);
+            up(size/2+size*headpart/2) cylinder(d=size/6, h=size*(1-headpart), center=true, $fn=18);
+        }
+    }
+}
+
 
 module endstopSwitch(center=false) {
     translate(center ? [-8.5/2,-8.5/2,0] : [0,0,0]) {

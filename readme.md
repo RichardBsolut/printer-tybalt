@@ -46,11 +46,6 @@ The list is more an  overview not a final list
 ## Printed parts
 | Part | Time | Length | Gram |
 |----------|-------------:|------:|------:|
-| **Extruder** |
-| Idler | 20m | 1.53m   | 5g |
-| Plug | 5m | 0.21m   | 1g |
-| Base | 28m | 2.56m   | 8g |
-| Holder | 35m | 2.89m   | 9g |
 | **Carraige** |
 | Clamps | 25m | 1.62m   | 5g |
 | Carriage | 1h 55m | 9.19m   | 24g |
@@ -58,16 +53,16 @@ The list is more an  overview not a final list
 | y | 50m | 4.07m | 12g |
 | x | 1h 35m | 7.94m   | 24g |
 | z | 41m | 3.31m   | 10g |
-| Beltguide | 17m | 1.31m   | 4g |
+| Beltguide | 1.7m | 1.31m   | 4g |
 | **Frame** |
 | Z Hold | 53m | 3.99m   | 12g |
 | Z Magenet | 10m | 0.53m   | 2g |
 | **Printhead** |
 | Printhead | 1h 30m | 6.96m   | 21g |
 ||
-| ***Total*** | *9h 44m* | *46.10m* | 137g |
-
+| ***Total*** | *8h 16m* | *39.31m* | 114g |
 
 
 *Finally*
 http://pr0gramm.com/top/1498986
+
