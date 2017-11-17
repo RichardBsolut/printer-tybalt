@@ -2,7 +2,7 @@
 
 my version of the [Printer Kitten](https://github.com/woolfepr/Printer-Kitten)
 
-![Expected vs Real](/expected.png)
+![Expected vs Real](/expected_vs_real.jpg)
 
 ### Why not simple use Kitten ?
 
